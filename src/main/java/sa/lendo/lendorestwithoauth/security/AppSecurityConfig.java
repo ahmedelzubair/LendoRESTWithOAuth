@@ -42,7 +42,6 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAt(new JWTTokenVerifier(), JWTUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/signup").permitAll()
                 .anyRequest()
                 .authenticated();
 

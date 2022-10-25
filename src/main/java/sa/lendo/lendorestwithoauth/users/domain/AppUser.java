@@ -2,13 +2,10 @@ package sa.lendo.lendorestwithoauth.users.domain;
 
 
 import lombok.*;
-import org.apache.tomcat.jni.Address;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity(name = "users")
@@ -20,7 +17,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Builder
 public class AppUser implements Serializable {
-    //
+
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,5 +47,4 @@ public class AppUser implements Serializable {
         return getClass().hashCode();
     }
 
-    // INSERT INTO users (id,name,email,username,gender,status) VALUES (1,'Ahmed','ahmed.aau3@gmail.com', 'ahmed', 'MALE', 'ACTIVE');
 }

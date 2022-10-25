@@ -49,11 +49,11 @@ public class JWTUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
 
-        String token = getJWTToken(authResult, JWTConfig.EXPIRATION_TIME);
+        String accessToken = getJWTToken(authResult, JWTConfig.EXPIRATION_TIME);
 
         String refreshToken = getJWTToken(authResult, JWTConfig.REFRESH_EXPIRATION_TIME);
 
-        response.addHeader(JWTConfig.HEADER_STRING, JWTConfig.TOKEN_PREFIX + token);
+        response.addHeader(JWTConfig.HEADER_AUTHORIZATION, JWTConfig.TOKEN_PREFIX + accessToken);
         response.addHeader(JWTConfig.HEADER_REFRESH_TOKEN, JWTConfig.TOKEN_PREFIX + refreshToken);
 
 

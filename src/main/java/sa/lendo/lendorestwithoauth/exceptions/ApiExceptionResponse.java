@@ -6,13 +6,13 @@ public class ApiExceptionResponse {
     private final String message;
     private final int status;
     private final ZonedDateTime timestamp;
-    private final Throwable throwable;
+    private final String cause;
 
     public ApiExceptionResponse(String message, int status, Throwable throwable) {
         this.message = message;
         this.status = status;
         this.timestamp = ZonedDateTime.now();
-        this.throwable = throwable;
+        this.cause = throwable.getMessage();
     }
 
     public String getMessage() {
@@ -27,8 +27,8 @@ public class ApiExceptionResponse {
         return timestamp;
     }
 
-    public Throwable getThrowable() {
-        return throwable;
+    public String getCause() {
+        return cause;
     }
 
 

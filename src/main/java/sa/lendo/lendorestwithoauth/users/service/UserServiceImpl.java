@@ -1,5 +1,7 @@
 package sa.lendo.lendorestwithoauth.users.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import sa.lendo.lendorestwithoauth.exceptions.EntityNotFoundException;
 import sa.lendo.lendorestwithoauth.exceptions.EntityNotSavedException;
 import sa.lendo.lendorestwithoauth.users.domain.AppUser;
@@ -7,11 +9,8 @@ import sa.lendo.lendorestwithoauth.users.domain.dto.UserDTO;
 import sa.lendo.lendorestwithoauth.users.domain.dto.UserSignUpDTO;
 import sa.lendo.lendorestwithoauth.users.domain.mapper.UserMapper;
 import sa.lendo.lendorestwithoauth.users.repo.UserJpaRepo;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -56,69 +55,5 @@ public class UserServiceImpl implements UserService {
         return savedUserDTO;
     }
 
-    @Override
-    public UserDTO updateUser(UserDTO appUser) {
-
-        AppUser user = userMapper.mapToEntity(appUser);
-
-        Optional<AppUser> userOptional = userJpaRepo.findById(user.getId());
-
-        if (userOptional.isEmpty()) {
-            throw new EntityNotSavedException("Requested user not found");
-        }
-
-        AppUser updatedUser = userJpaRepo.save(user);
-
-        return userMapper.mapToDTO(updatedUser);
-    }
-
-    @Override
-    public void deleteUser(UserDTO appUser) {
-
-        AppUser user = userMapper.mapToEntity(appUser);
-
-        Optional<AppUser> userOptional = userJpaRepo.findById(user.getId());
-
-        if (userOptional.isEmpty()) {
-            throw new EntityNotSavedException("Requested user not found");
-        }
-
-        userJpaRepo.delete(user);
-    }
-
-    @Override
-    public UserDTO findUserByEmail(String email) {
-        AppUser user = userJpaRepo.findByEmail(email);
-        if (user == null) {
-            throw new EntityNotSavedException("User not found");
-        }
-        return userMapper.mapToDTO(user);
-    }
-
-    @Override
-    public UserDTO findUserById(Long id) {
-        Optional<AppUser> userOptional = userJpaRepo.findById(id);
-        if (userOptional.isEmpty()) {
-            throw new EntityNotSavedException("User not found");
-        }
-        return userMapper.mapToDTO(userOptional.get());
-    }
-
-    @Override
-    public void changePassword(String email, String oldPassword, String newPassword) {
-
-    }
-
-    @Override
-    public void deleteUserById(Long id) {
-
-        Optional<AppUser> userOptional = userJpaRepo.findById(id);
-
-        if (userOptional.isEmpty()) {
-            throw new EntityNotSavedException("Requested user not found");
-        }
-
-        userJpaRepo.deleteById(id);
-    }
 
 }
