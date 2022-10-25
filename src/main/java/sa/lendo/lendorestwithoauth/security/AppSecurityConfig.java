@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import sa.lendo.lendorestwithoauth.security.jwt.JWTTokenVerifier;
 import sa.lendo.lendorestwithoauth.security.jwt.JWTUsernameAndPasswordAuthenticationFilter;
+import sa.lendo.lendorestwithoauth.users.tokens.TokenService;
 
 @Configuration
 @EnableWebSecurity
@@ -23,11 +24,13 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
 
     private final UserDetailsService userDetailsService;
+    private final TokenService tokenService;
 
     @Autowired
-    public AppSecurityConfig(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
+    public AppSecurityConfig(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService, TokenService tokenService) {
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
+        this.tokenService = tokenService;
     }
 
     @Override
@@ -39,7 +42,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(jwtUsernameAndPasswordAuthenticationFilter())
-                .addFilterAt(new JWTTokenVerifier(), JWTUsernameAndPasswordAuthenticationFilter.class)
+                .addFilterAt(new JWTTokenVerifier(tokenService), JWTUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .anyRequest()
@@ -61,7 +64,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     public JWTUsernameAndPasswordAuthenticationFilter jwtUsernameAndPasswordAuthenticationFilter() throws Exception {
-        JWTUsernameAndPasswordAuthenticationFilter jwtAuthenticationFilter = new JWTUsernameAndPasswordAuthenticationFilter(authenticationManager());
+        JWTUsernameAndPasswordAuthenticationFilter jwtAuthenticationFilter =
+                new JWTUsernameAndPasswordAuthenticationFilter(authenticationManager(), tokenService);
         jwtAuthenticationFilter.setFilterProcessesUrl("/api/v1/login");
         return jwtAuthenticationFilter;
     }

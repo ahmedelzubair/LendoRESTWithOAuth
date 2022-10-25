@@ -1,0 +1,244 @@
+{
+	"info": {
+		"_postman_id": "a15d672d-b87a-4ac9-b24a-6eb725b670b3",
+		"name": "LendoRESTAPIWithOAuth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1372530"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"ahmed\",\n    \"password\" : \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{spring-url}}/login",
+							"host": [
+								"{{spring-url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SignUp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"khalid\",\n    \"password\" : \"password\",\n    \"email\": \"khalid@lendo.sa\",\n    \"name\":\"Khaild\",\n    \"gender\": \"MALE\",\n    \"status\": \"ACTIVE\",\n    \"roles\":\"USER\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{spring-url}}/users",
+							"host": [
+								"{{spring-url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET all users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{spring-url}}/users",
+							"host": [
+								"{{spring-url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "GET all posts",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{spring-url}}/posts",
+							"host": [
+								"{{spring-url}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET user posts",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{spring-url}}/posts/user/1",
+							"host": [
+								"{{spring-url}}"
+							],
+							"path": [
+								"posts",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "GET All Comment",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"name\": \"أثاثات\",\n    \"status\": \"1\",\n    \"createdAt\": \"2022-08-03\"\n}"
+						},
+						"url": {
+							"raw": "{{spring-url}}/posts/comments",
+							"host": [
+								"{{spring-url}}"
+							],
+							"path": [
+								"posts",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET post comments",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"adId\": 1,\n}"
+						},
+						"url": {
+							"raw": "{{spring-url}}/posts/comments/1",
+							"host": [
+								"{{spring-url}}"
+							],
+							"path": [
+								"posts",
+								"comments",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhaG1lZCIsImlzcyI6ImxlbmRvLnNhIiwiZXhwIjoxNjY2NzE1ODMwLCJpYXQiOjE2NjY3MTU3MTAsImF1dGhvcml0aWVzIjpbIlJPTEVfQURNSU4iLCJSRUFEX1BPU1RTIiwiV1JJVEVfUE9TVFMiXX0.PT7HEx7laF5xg2RKsUUAJ-NGMbZ2VTRtmOOOcXut2YY",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "spring-url",
+			"value": "http://127.0.0.1:8080/api/v1",
+			"type": "string"
+		}
+	]
+}

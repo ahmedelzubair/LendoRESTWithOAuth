@@ -1,6 +1,5 @@
 package sa.lendo.lendorestwithoauth.security.jwt;
 
-import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -8,20 +7,23 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import sa.lendo.lendorestwithoauth.users.domain.UserToken;
+import sa.lendo.lendorestwithoauth.users.tokens.TokenService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
 
 public class JWTUsernameAndPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
 
-    public JWTUsernameAndPasswordAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JWTUsernameAndPasswordAuthenticationFilter(AuthenticationManager authenticationManager, TokenService tokenService) {
         this.authenticationManager = authenticationManager;
+        this.tokenService = tokenService;
     }
 
     @Override
@@ -49,24 +51,27 @@ public class JWTUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
 
-        String accessToken = getJWTToken(authResult, JWTConfig.EXPIRATION_TIME);
+        String accessToken = JWTConfig.getJWTToken(JWTConfig.EXPIRATION_TIME, authResult.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).toArray(String[]::new), authResult.getName());
 
-        String refreshToken = getJWTToken(authResult, JWTConfig.REFRESH_EXPIRATION_TIME);
+        String refreshToken = JWTConfig.getJWTToken(JWTConfig.REFRESH_EXPIRATION_TIME, authResult.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).toArray(String[]::new), authResult.getName());
+
+        saveFirstUserTokensToDB(accessToken, refreshToken, authResult.getName());
 
         response.addHeader(JWTConfig.HEADER_AUTHORIZATION, JWTConfig.TOKEN_PREFIX + accessToken);
         response.addHeader(JWTConfig.HEADER_REFRESH_TOKEN, JWTConfig.TOKEN_PREFIX + refreshToken);
 
-
     }
 
-    private String getJWTToken(Authentication authResult, long expirationTime) {
-        return JWT.create()
-                .withSubject(authResult.getName())
-                .withArrayClaim("authorities", authResult.getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority).toArray(String[]::new))
-                .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
-                .withIssuer(JWTConfig.ISSUER)
-                .sign(JWTConfig.getAlgorithm());
+    private void saveFirstUserTokensToDB(String accessToken, String refreshToken, String username) {
+        UserToken userToken = new UserToken();
+        userToken.setAccessToken(accessToken);
+        userToken.setRefreshToken(refreshToken);
+        userToken.setUsername(username);
+
+        tokenService.saveNewUserToken(userToken);
     }
+
+
 }
