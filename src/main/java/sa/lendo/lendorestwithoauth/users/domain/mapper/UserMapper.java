@@ -4,6 +4,7 @@ import sa.lendo.lendorestwithoauth.users.domain.AppUser;
 import sa.lendo.lendorestwithoauth.users.domain.dto.UserDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+import sa.lendo.lendorestwithoauth.users.domain.dto.UserSignUpDTO;
 
 @Mapper
 public interface UserMapper {
@@ -13,5 +14,6 @@ public interface UserMapper {
     UserDTO mapToDTO(AppUser user);
 
     AppUser mapToEntity(UserDTO userDTO);
+    AppUser mapToEntity(UserSignUpDTO userDTO);
 
 }

@@ -4,6 +4,7 @@ import sa.lendo.lendorestwithoauth.exceptions.EntityNotFoundException;
 import sa.lendo.lendorestwithoauth.exceptions.EntityNotSavedException;
 import sa.lendo.lendorestwithoauth.users.domain.AppUser;
 import sa.lendo.lendorestwithoauth.users.domain.dto.UserDTO;
+import sa.lendo.lendorestwithoauth.users.domain.dto.UserSignUpDTO;
 import sa.lendo.lendorestwithoauth.users.domain.mapper.UserMapper;
 import sa.lendo.lendorestwithoauth.users.repo.UserJpaRepo;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,7 +43,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO createUser(UserDTO userDTO) {
+    public UserDTO createUser(UserSignUpDTO userDTO) {
 
         AppUser user = userMapper.mapToEntity(userDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));

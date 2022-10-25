@@ -5,9 +5,10 @@ import sa.lendo.lendorestwithoauth.users.domain.UserGender;
 import sa.lendo.lendorestwithoauth.users.domain.UserStatus;
 
 @Data
-public class UserDTO {
+public class UserSignUpDTO {
 
     private Long id;
+    private String password;
     private String username;
     private String email;
     private String name;

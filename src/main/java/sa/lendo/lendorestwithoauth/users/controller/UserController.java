@@ -2,6 +2,7 @@ package sa.lendo.lendorestwithoauth.users.controller;
 
 
 import sa.lendo.lendorestwithoauth.users.domain.dto.UserDTO;
+import sa.lendo.lendorestwithoauth.users.domain.dto.UserSignUpDTO;
 import sa.lendo.lendorestwithoauth.users.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,5 +26,16 @@ public class UserController {
         return ResponseEntity.ok(userService.findAll());
     }
 
+    // sign up new user
+    @PostMapping("")
+    public ResponseEntity<UserDTO> signUp(@RequestBody UserSignUpDTO userDTO) {
+        UserDTO savedUser = userService.createUser(userDTO);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedUser.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(savedUser);
+    }
 
 }
