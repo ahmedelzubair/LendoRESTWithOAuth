@@ -29,9 +29,9 @@ public class JWTUsernameAndPasswordAuthenticationFilter extends UsernamePassword
             throws AuthenticationException {
 
         try {
-            UserData userData = new ObjectMapper().readValue(request.getInputStream(), UserData.class);
+            UserLoginData userLoginData = new ObjectMapper().readValue(request.getInputStream(), UserLoginData.class);
             Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    userData.getUsername(), userData.getPassword());
+                    userLoginData.getUsername(), userLoginData.getPassword());
             return authenticationManager.authenticate(authentication);
         } catch (IOException e) {
             throw new RuntimeException("Error in getting username and password");
@@ -63,7 +63,7 @@ public class JWTUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                         .map(GrantedAuthority::getAuthority).toArray(String[]::new))
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis() + JWTConfig.REFRESH_EXPIRATION_TIME))
-                .withIssuer(request.getRequestURL().toString())
+                .withIssuer(JWTConfig.ISSUER)
                 .sign(JWTConfig.getAlgorithm());
 
         response.addHeader(JWTConfig.HEADER_STRING, JWTConfig.TOKEN_PREFIX + token);

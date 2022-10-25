@@ -1,12 +1,13 @@
 package sa.lendo.lendorestwithoauth.users.controller;
 
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sa.lendo.lendorestwithoauth.users.domain.dto.UserDTO;
 import sa.lendo.lendorestwithoauth.users.domain.dto.UserSignUpDTO;
 import sa.lendo.lendorestwithoauth.users.service.UserService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Set;
@@ -22,6 +23,7 @@ public class UserController {
     }
 
     @GetMapping("")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Set<UserDTO>> getAllUsers() {
         return ResponseEntity.ok(userService.findAll());
     }

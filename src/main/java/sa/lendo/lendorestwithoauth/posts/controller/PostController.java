@@ -1,6 +1,7 @@
 package sa.lendo.lendorestwithoauth.posts.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +23,14 @@ public class PostController {
 
 
     @GetMapping("")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Set<PostDTO>> getAllPosts() {
         return ResponseEntity.ok(postService.findAllPosts());
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<Set<PostDTO>> getAllPostsByUserId(@PathVariable Long userId) {
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<Set<PostDTO>> getAllUserPosts(@PathVariable Long userId) {
         return ResponseEntity.ok(postService.findAllPostsByUserId(userId));
     }
 }

@@ -60,7 +60,7 @@ public class JWTTokenVerifier extends OncePerRequestFilter {
 
     private DecodedJWT getDecodedJWT(String token) {
         JWTVerifier verifier = JWT.require(JWTConfig.getAlgorithm())
-                .withIssuer("Ahmed Elzubair")
+                .withIssuer(JWTConfig.ISSUER)
                 .build();
         return verifier.verify(token);
     }

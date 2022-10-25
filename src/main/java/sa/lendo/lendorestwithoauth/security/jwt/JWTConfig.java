@@ -12,6 +12,7 @@ public class JWTConfig {
     public static final long EXPIRATION_TIME = 864_000_000; // 10 days
     public static final long REFRESH_EXPIRATION_TIME = EXPIRATION_TIME * 2; // 20 days
     public static final String HEADER_REFRESH_TOKEN = "Refresh-Token";
+    public static final String ISSUER = "lendo.sa";
 
 
     public static Algorithm getAlgorithm() {

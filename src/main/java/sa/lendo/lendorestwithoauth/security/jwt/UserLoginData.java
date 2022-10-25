@@ -1,17 +1,17 @@
 package sa.lendo.lendorestwithoauth.security.jwt;
 
-public class UserData {
+public class UserLoginData {
 
-        private String username;
-        private String password;
+    private String username;
+    private String password;
 
-        public UserData() {
-        }
+    public UserLoginData() {
+    }
 
-        public UserData(String username, String password) {
-            this.username = username;
-            this.password = password;
-        }
+    public UserLoginData(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
         public String getUsername() {
             return username;
