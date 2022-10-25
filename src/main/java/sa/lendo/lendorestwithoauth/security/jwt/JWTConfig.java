@@ -15,8 +15,8 @@ public class JWTConfig {
     public static final String HEADER_AUTHORIZATION = "Authorization";
     public static final String HEADER_REFRESH_TOKEN = "Refresh-Token";
     public static final String HEADER_ERROR_MESSAGE = "Error-Message";
-    public static final long EXPIRATION_TIME = 1000 * 60; // 10 days
-    public static final long REFRESH_EXPIRATION_TIME = EXPIRATION_TIME * 2; // 20 days
+    public static final long EXPIRATION_TIME = 600_000; // 10 minutes
+    public static final long REFRESH_EXPIRATION_TIME = EXPIRATION_TIME * 2; // 20 minutes
 
     public static final String ISSUER = "lendo.sa";
 

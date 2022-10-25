@@ -33,9 +33,6 @@ public class AppUser implements Serializable {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
     private String roles;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "tokens_id",referencedColumnName = "id")
-    private UserToken userToken;
 
     @Override
     public boolean equals(Object o) {
