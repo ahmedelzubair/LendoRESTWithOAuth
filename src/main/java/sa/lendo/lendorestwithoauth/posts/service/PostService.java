@@ -1,23 +1,14 @@
-package sa.lendo.lendorestwithoauth.ads.service;
+package sa.lendo.lendorestwithoauth.posts.service;
 
-import sa.lendo.lendorestwithoauth.ads.domain.dto.AdDTO;
+import sa.lendo.lendorestwithoauth.posts.domain.dto.PostDTO;
 
 import java.util.Set;
 
-public interface AdService {
-    AdDTO createAd(AdDTO ad);
+public interface PostService {
 
-    AdDTO findAdById(Long adId);
+    Set<PostDTO> findAllPostsByUserId(Long adId);
 
-    AdDTO updateAd(AdDTO ad);
+    Set<PostDTO> findAllPosts();
 
-    void deleteAdById(Long adId);
 
-    void deleteAd(AdDTO adDTO);
-
-    Set<AdDTO> getUserAds(Long userId);
-
-    Set<AdDTO> getHomePageTimeline();
-
-    Set<AdDTO> findByTitleOrContent(String nameOrContent);
 }

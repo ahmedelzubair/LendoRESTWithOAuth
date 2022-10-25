@@ -1,69 +1,33 @@
-package sa.lendo.lendorestwithoauth.ads.controller;
+package sa.lendo.lendorestwithoauth.posts.controller;
 
-import sa.lendo.lendorestwithoauth.ads.domain.dto.AdDTO;
-import sa.lendo.lendorestwithoauth.ads.service.AdService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import sa.lendo.lendorestwithoauth.posts.domain.dto.PostDTO;
+import sa.lendo.lendorestwithoauth.posts.service.PostService;
 
-import java.net.URI;
 import java.util.Set;
 
-// TODO : implement and all ads controller methods
 @RestController
-@RequestMapping("api/v1/ads")
-public class AdController {
+@RequestMapping("api/v1/posts")
+public class PostController {
 
-    private final AdService adService;
+    private final PostService postService;
 
-    public AdController(AdService adService) {
-        this.adService = adService;
+    public PostController(PostService postService) {
+        this.postService = postService;
     }
 
 
     @GetMapping("")
-    public ResponseEntity<Set<AdDTO>> getHomePageAds() {
-        return ResponseEntity.ok(adService.getHomePageTimeline());
+    public ResponseEntity<Set<PostDTO>> getAllPosts() {
+        return ResponseEntity.ok(postService.findAllPosts());
     }
 
-    @PostMapping("")
-    public ResponseEntity<AdDTO> createAd(@RequestBody AdDTO adDTO) {
-        AdDTO createdAd = adService.createAd(adDTO);
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(createdAd.getId()).toUri();
-
-        return ResponseEntity.created(location).body(createdAd);
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Set<PostDTO>> getAllPostsByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(postService.findAllPostsByUserId(userId));
     }
-
-    @PutMapping("")
-    public ResponseEntity<AdDTO> updateAd(@RequestBody AdDTO adDTO) {
-        return ResponseEntity.ok(adService.updateAd(adDTO));
-    }
-
-    @DeleteMapping("")
-    public ResponseEntity<Void> deleteAd(@RequestBody AdDTO adDTO) {
-        adService.deleteAd(adDTO);
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAdById(@PathVariable Long id) {
-        adService.deleteAdById(id);
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<AdDTO> getAd(@PathVariable Long id) {
-        return ResponseEntity.ok(adService.findAdById(id));
-    }
-
-
-    @GetMapping("/{titleOrContent}")
-    public ResponseEntity<Set<AdDTO>> searchAdsByTitleOrBody(@PathVariable String titleOrContent) {
-
-        return ResponseEntity.ok(adService.findByTitleOrContent(titleOrContent));
-    }
-
 }

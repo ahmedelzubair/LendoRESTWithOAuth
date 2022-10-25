@@ -20,41 +20,8 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("")
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
-        UserDTO createdUser = userService.createUser(userDTO);
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(createdUser.getUuid()).toUri();
-
-        return ResponseEntity.created(location).body(createdUser);
-    }
-
-    @PutMapping("")
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO) {
-        return ResponseEntity.ok(userService.updateUser(userDTO));
-    }
-
-    @DeleteMapping("")
-    public ResponseEntity<Void> deleteUser(@RequestBody UserDTO userDTO) {
-        userService.deleteUser(userDTO);
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {
-        userService.deleteUserById(id);
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.findUserById(id));
-    }
-
     @GetMapping("")
-    public ResponseEntity<Set<UserDTO>> getAllCategories() {
+    public ResponseEntity<Set<UserDTO>> getAllUsers() {
         return ResponseEntity.ok(userService.findAll());
     }
 

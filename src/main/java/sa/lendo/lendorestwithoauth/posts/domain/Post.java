@@ -1,4 +1,4 @@
-package sa.lendo.lendorestwithoauth.ads.domain;
+package sa.lendo.lendorestwithoauth.posts.domain;
 
 
 import sa.lendo.lendorestwithoauth.users.domain.AppUser;
@@ -9,7 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-@Entity(name = "ads")
+@Entity(name = "posts")
 @Getter
 @Setter
 @ToString
@@ -17,27 +17,18 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Ad implements Serializable {
+public class Post implements Serializable {
 
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    private String content;
-    private String mediaUrls;
-    private Long impressions;
-    @Enumerated(EnumType.STRING)
-    private AdStatus status;
-
+    private String body;
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private AppUser user;
-    private String hashtags;
-
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
 
 
 }

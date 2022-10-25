@@ -1,7 +1,12 @@
 package sa.lendo.lendorestwithoauth.users.domain.dto;
 
 import lombok.Data;
+import sa.lendo.lendorestwithoauth.users.domain.UserGender;
+import sa.lendo.lendorestwithoauth.users.domain.UserStatus;
 
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -10,20 +15,12 @@ import java.util.UUID;
 public class UserDTO {
 
     private Long id;
-    private UUID uuid;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String username;
     private String password;
-    private String phoneNumber;
-    private String profileImageUrl;
-    private String coverImageUrl;
-    private LocalDate dateOfBirth;
-    private Long addressId;
-    private String about;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private String username;
+    private String email;
+    private String name;
+    private UserGender gender;
+    private UserStatus status;
 
 
 }

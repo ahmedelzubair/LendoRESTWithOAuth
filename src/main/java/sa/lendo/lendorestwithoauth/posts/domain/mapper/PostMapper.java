@@ -1,21 +1,21 @@
-package sa.lendo.lendorestwithoauth.ads.domain.mapper;
+package sa.lendo.lendorestwithoauth.posts.domain.mapper;
 
-import sa.lendo.lendorestwithoauth.ads.domain.Ad;
-import sa.lendo.lendorestwithoauth.ads.domain.dto.AdDTO;
+import sa.lendo.lendorestwithoauth.posts.domain.Post;
+import sa.lendo.lendorestwithoauth.posts.domain.dto.PostDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
-public interface AdMapper {
+public interface PostMapper {
 
-    AdMapper INSTANCE = Mappers.getMapper(AdMapper.class);
+    PostMapper INSTANCE = Mappers.getMapper(PostMapper.class);
 
     @Mapping(source = "user.id", target = "userId")
-    AdDTO mapToDTO(Ad ad);
+    PostDTO mapToDTO(Post post);
 
     @Mapping(source = "userId", target = "user.id")
-    Ad mapToEntity(AdDTO adDTO);
+    Post mapToEntity(PostDTO postDTO);
 
 
 }

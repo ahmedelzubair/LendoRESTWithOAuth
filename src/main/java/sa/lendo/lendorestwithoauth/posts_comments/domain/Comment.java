@@ -1,6 +1,6 @@
-package sa.lendo.lendorestwithoauth.ads_comments.domain;
+package sa.lendo.lendorestwithoauth.posts_comments.domain;
 
-import sa.lendo.lendorestwithoauth.ads.domain.Ad;
+import sa.lendo.lendorestwithoauth.posts.domain.Post;
 import sa.lendo.lendorestwithoauth.users.domain.AppUser;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-@Entity(name = "ads_comments")
+@Entity(name = "posts_comments")
 @Getter
 @Setter
 @ToString
@@ -18,28 +18,20 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AdComment implements Serializable {
+public class Comment implements Serializable {
 
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String content;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private AppUser user;
-
+    private String body;
+    private String name;
+    private String email;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ad_id",referencedColumnName = "id")
+    @JoinColumn(name = "post_id",referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Ad ad;
+    private Post post;
 
-    @Enumerated(EnumType.STRING)
-    private AdCommentStatus status;
-
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
 
 
 }

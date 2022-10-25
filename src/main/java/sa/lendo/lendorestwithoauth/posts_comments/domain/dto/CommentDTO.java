@@ -1,21 +1,14 @@
-package sa.lendo.lendorestwithoauth.ads_comments.domain.dto;
+package sa.lendo.lendorestwithoauth.posts_comments.domain.dto;
 
-import sa.lendo.lendorestwithoauth.ads_comments.domain.AdCommentStatus;
 import lombok.Data;
 
-import java.sql.Timestamp;
-
 @Data
-
-public class AdCommentDTO {
+public class CommentDTO {
 
     private Long id;
-    private String content;
-    private Long userId;
-    private Long adId;
-    private String hashtags;
-    private AdCommentStatus status;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private Long postId;
+    private String name;
+    private String email;
+    private String body;
 
 }

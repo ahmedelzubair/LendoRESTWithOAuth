@@ -1,104 +1,50 @@
-package sa.lendo.lendorestwithoauth.ads_comments.service;
+package sa.lendo.lendorestwithoauth.posts_comments.service;
 
 
-import sa.lendo.lendorestwithoauth.ads_comments.domain.AdComment;
-import sa.lendo.lendorestwithoauth.ads_comments.domain.dto.AdCommentDTO;
-import sa.lendo.lendorestwithoauth.ads_comments.domain.mapper.AdCommentMapper;
-import sa.lendo.lendorestwithoauth.ads_comments.repo.AdCommentJpaRepo;
-import sa.lendo.lendorestwithoauth.exceptions.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import sa.lendo.lendorestwithoauth.exceptions.EntityNotFoundException;
+import sa.lendo.lendorestwithoauth.posts_comments.domain.Comment;
+import sa.lendo.lendorestwithoauth.posts_comments.domain.dto.CommentDTO;
+import sa.lendo.lendorestwithoauth.posts_comments.domain.mapper.CommentMapper;
+import sa.lendo.lendorestwithoauth.posts_comments.repo.CommentJpaRepo;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class AdCommentServiceImpl implements AdCommentService {
+public class CommentServiceImpl implements CommentService {
 
-    private final AdCommentJpaRepo adCommentJpaRepo;
-    private final AdCommentMapper adCommentMapper;
+    private final CommentJpaRepo commentJpaRepo;
+    private final CommentMapper commentMapper;
 
-    public AdCommentServiceImpl(AdCommentJpaRepo adCommentJpaRepo) {
-        this.adCommentJpaRepo = adCommentJpaRepo;
-        this.adCommentMapper = AdCommentMapper.INSTANCE;
+    public CommentServiceImpl(CommentJpaRepo commentJpaRepo) {
+        this.commentJpaRepo = commentJpaRepo;
+        this.commentMapper = CommentMapper.INSTANCE;
     }
 
 
     @Override
-    public AdCommentDTO createAdComment(AdCommentDTO adCommentDTO) {
+    public Set<CommentDTO> findPostCommentsByPostId(Long postId) {
 
-        AdComment adCommentEntity = adCommentMapper.mapToEntity(adCommentDTO);
+        Set<Comment> comments = commentJpaRepo.findAllByPostId(postId);
 
-        AdComment savedAdComment = adCommentJpaRepo.save(adCommentEntity);
-
-        return adCommentMapper.mapToDTO(savedAdComment);
-    }
-
-    @Override
-    public Set<AdCommentDTO> findAdCommentsByAdId(Long adId) {
-
-        Set<AdComment> adComments = adCommentJpaRepo.findAllByAd_IdOrderByCreatedAtDesc(adId);
-
-        if (adComments.isEmpty()) {
-            throw new EntityNotFoundException("AdComment with id " + adId + " does not exist");
+        if (comments.isEmpty()) {
+            throw new EntityNotFoundException("PostComment with id " + postId + " does not exist");
         }
 
-        return adComments.stream().map(adCommentMapper::mapToDTO).collect(Collectors.toSet());
+        return comments.stream().map(commentMapper::mapToDTO).collect(Collectors.toSet());
     }
 
     @Override
-    public AdCommentDTO findAdCommentsById(Long commentID) {
+    public Set<CommentDTO> findAllComments() {
+        List<Comment> comments = commentJpaRepo.findAll();
 
-        Optional<AdComment> adComment = adCommentJpaRepo.findById(commentID);
-
-        if (adComment.isEmpty()) {
-            throw new EntityNotFoundException("AdComment with id " + commentID + " does not exist");
+        if (comments.isEmpty()) {
+            throw new EntityNotFoundException("No comments available yet");
         }
 
-        return adCommentMapper.mapToDTO(adComment.get());
-    }
-
-    @Override
-    public AdCommentDTO updateAdComment(AdCommentDTO commentDTO) {
-
-        AdComment adCommentEntity = adCommentMapper.mapToEntity(commentDTO);
-
-        Optional<AdComment> adOptional = adCommentJpaRepo.findById(adCommentEntity.getId());
-
-        if (adOptional.isEmpty()) {
-            throw new EntityNotFoundException("AdComment with id " + adCommentEntity.getId()
-                    + " does not exist");
-        }
-
-        AdComment updatedAdComment = adCommentJpaRepo.save(adCommentEntity);
-
-        return adCommentMapper.mapToDTO(updatedAdComment);
-    }
-
-    @Override
-    public void deleteAdCommentById(Long adCommentId) {
-
-        Optional<AdComment> adOptional = adCommentJpaRepo.findById(adCommentId);
-
-        if (adOptional.isEmpty()) {
-            throw new EntityNotFoundException("AdComment with id " + adCommentId
-                    + " does not exist");
-        }
-
-        adCommentJpaRepo.delete(adOptional.get());
-    }
-
-    @Override
-    public void deleteAdComment(AdCommentDTO adCommentDTO) {
-
-        Optional<AdComment> adOptional = adCommentJpaRepo.findById(adCommentDTO.getId());
-
-        if (adOptional.isEmpty()) {
-            throw new EntityNotFoundException("AdComment with id " + adCommentDTO.getId()
-                    + " does not exist");
-        }
-
-        adCommentJpaRepo.delete(adOptional.get());
+        return comments.stream().map(commentMapper::mapToDTO).collect(Collectors.toSet());
     }
 
 

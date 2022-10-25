@@ -25,23 +25,17 @@ public class AppUser implements Serializable {
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName;
-    private String lastName;
-    @Column(unique = true)
-    private String email;
     private String password;
     @Column(nullable = false, unique = true)
     private String username;
-    private String phoneNumber;
-    private String profileImageUrl;
-    private String coverImageUrl;
-    private LocalDate dateOfBirth;
+    @Column(unique = true)
+    private String email;
+    private String name;
+    @Enumerated(EnumType.STRING)
+    private UserGender gender;
     @Enumerated(EnumType.STRING)
     private UserStatus status;
-    private String about;
     private String roles;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
 
     @Override
     public boolean equals(Object o) {
@@ -55,4 +49,6 @@ public class AppUser implements Serializable {
     public int hashCode() {
         return getClass().hashCode();
     }
+
+    // INSERT INTO users (id,name,email,username,gender,status) VALUES (1,'Ahmed','ahmed.aau3@gmail.com', 'ahmed', 'MALE', 'ACTIVE');
 }
