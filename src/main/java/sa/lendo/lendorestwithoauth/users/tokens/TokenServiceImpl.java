@@ -3,6 +3,7 @@ package sa.lendo.lendorestwithoauth.users.tokens;
 import org.springframework.stereotype.Service;
 import sa.lendo.lendorestwithoauth.exceptions.EntityNotFoundException;
 import sa.lendo.lendorestwithoauth.users.domain.UserToken;
+import sa.lendo.lendorestwithoauth.users.service.UserService;
 
 import java.util.Optional;
 
@@ -10,22 +11,31 @@ import java.util.Optional;
 public class TokenServiceImpl implements TokenService {
 
     private final TokenJpaRepo tokenJpaRepo;
+    private final UserService userService;
 
-    public TokenServiceImpl(TokenJpaRepo tokenJpaRepo) {
+    public TokenServiceImpl(TokenJpaRepo tokenJpaRepo, UserService userService) {
         this.tokenJpaRepo = tokenJpaRepo;
+        this.userService = userService;
     }
 
 
     @Override
-    public UserToken updateUserToken(UserToken updatedToken) {
+    public UserToken updateUserToken(String oldAccessToken, UserToken newToken) {
         // if token already exists then update it by refresh token
-        Optional<UserToken> userTokenOptional = tokenJpaRepo.findRefreshTokenByAccessToken(updatedToken.getRefreshToken());
-        userTokenOptional.ifPresent(token -> updatedToken.setId(token.getId()));
-        return tokenJpaRepo.save(updatedToken);
+        Optional<UserToken> userTokenOptional = tokenJpaRepo.findByAccessToken(oldAccessToken);
+        userTokenOptional.ifPresent(token -> newToken.setId(token.getId()));
+        return tokenJpaRepo.save(newToken);
     }
 
     @Override
     public UserToken saveNewUserToken(UserToken userToken) {
+        // add user token_id to user table
+
+        userService.addTokenIdToUser(userToken);
+
+        Optional<UserToken> userTokenOptional = tokenJpaRepo.findByAccessToken(userToken.getAccessToken());
+        // remove old token
+        userTokenOptional.ifPresent(tokenJpaRepo::delete);
         return tokenJpaRepo.save(userToken);
     }
 

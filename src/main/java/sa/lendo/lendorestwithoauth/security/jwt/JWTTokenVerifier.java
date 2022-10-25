@@ -65,19 +65,25 @@ public class JWTTokenVerifier extends OncePerRequestFilter {
         }
     }
 
-    private void issueNewAccessTokenWithRefreshToken(HttpServletResponse response, String accessToken, JWTVerificationException exception) throws IOException {
+    private void issueNewAccessTokenWithRefreshToken(HttpServletResponse response, String oldAccessToken,
+                                                     JWTVerificationException exception) throws IOException {
         // check db for refresh token
         // if exists and valid, generate new access token and send it back to client
         // if not, send 401
         try {
-            String refreshToken = tokenService.findRefreshTokenByAccessToken(accessToken).getRefreshToken();
+            String refreshToken = tokenService.findRefreshTokenByAccessToken(oldAccessToken).getRefreshToken();
             DecodedJWT jwt = getDecodedJWT(refreshToken);
             String[] roles = jwt.getClaim("authorities").asList(String.class).toArray(String[]::new);
-            if (jwt.getExpiresAt().getTime() < System.currentTimeMillis()) {
+            if (jwt.getExpiresAt().getTime() > System.currentTimeMillis()) {
                 String newAccessToken = JWTConfig.getJWTToken(JWTConfig.EXPIRATION_TIME, roles, jwt.getSubject());
+                saveNewGeneratedAccessToken(refreshToken,oldAccessToken, newAccessToken);
+
                 response.setContentType(APPLICATION_JSON_VALUE);
-                saveNewGeneratedAccessToken(refreshToken, newAccessToken);
-                new ObjectMapper().writeValue(response.getOutputStream(), newAccessToken);
+                response.addHeader(JWTConfig.HEADER_AUTHORIZATION, JWTConfig.TOKEN_PREFIX + newAccessToken);
+                response.addHeader(JWTConfig.HEADER_REFRESH_TOKEN, JWTConfig.TOKEN_PREFIX + refreshToken);
+
+                Map<String, String> newTokens = Map.of("message","Please use the new access token","accessToken", newAccessToken, "refreshToken", refreshToken);
+                new ObjectMapper().writeValue(response.getOutputStream(), newTokens);
             } else {
                 response.setContentType(APPLICATION_JSON_VALUE);
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -90,11 +96,11 @@ public class JWTTokenVerifier extends OncePerRequestFilter {
 
     }
 
-    private void saveNewGeneratedAccessToken(String refreshToken, String newAccessToken) {
+    private void saveNewGeneratedAccessToken(String refreshToken,String oldAccessToken, String newAccessToken) {
         UserToken userToken = new UserToken();
         userToken.setRefreshToken(refreshToken);
         userToken.setAccessToken(newAccessToken);
-        tokenService.updateUserToken(userToken);
+        tokenService.updateUserToken(oldAccessToken,userToken);
     }
 
     private void setHeaderAndBodyError(HttpServletResponse response, Exception exception) throws IOException {

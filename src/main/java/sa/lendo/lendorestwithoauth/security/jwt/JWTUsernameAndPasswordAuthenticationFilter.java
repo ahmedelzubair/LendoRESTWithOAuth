@@ -8,6 +8,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import sa.lendo.lendorestwithoauth.users.domain.UserToken;
+import sa.lendo.lendorestwithoauth.users.service.UserService;
 import sa.lendo.lendorestwithoauth.users.tokens.TokenService;
 
 import javax.servlet.FilterChain;
@@ -21,7 +22,7 @@ public class JWTUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
 
-    public JWTUsernameAndPasswordAuthenticationFilter(AuthenticationManager authenticationManager, TokenService tokenService) {
+    public JWTUsernameAndPasswordAuthenticationFilter(AuthenticationManager authenticationManager, TokenService tokenService, UserService userService) {
         this.authenticationManager = authenticationManager;
         this.tokenService = tokenService;
     }
@@ -65,6 +66,7 @@ public class JWTUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     }
 
     private void saveFirstUserTokensToDB(String accessToken, String refreshToken, String username) {
+
         UserToken userToken = new UserToken();
         userToken.setAccessToken(accessToken);
         userToken.setRefreshToken(refreshToken);

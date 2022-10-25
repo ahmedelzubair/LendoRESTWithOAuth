@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import sa.lendo.lendorestwithoauth.security.jwt.JWTTokenVerifier;
 import sa.lendo.lendorestwithoauth.security.jwt.JWTUsernameAndPasswordAuthenticationFilter;
+import sa.lendo.lendorestwithoauth.users.service.UserService;
 import sa.lendo.lendorestwithoauth.users.tokens.TokenService;
 
 @Configuration
@@ -25,12 +26,14 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
     private final TokenService tokenService;
+    private final UserService userService;
 
     @Autowired
-    public AppSecurityConfig(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService, TokenService tokenService) {
+    public AppSecurityConfig(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService, TokenService tokenService, UserService userService) {
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
         this.tokenService = tokenService;
+        this.userService = userService;
     }
 
     @Override
@@ -65,7 +68,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
     public JWTUsernameAndPasswordAuthenticationFilter jwtUsernameAndPasswordAuthenticationFilter() throws Exception {
         JWTUsernameAndPasswordAuthenticationFilter jwtAuthenticationFilter =
-                new JWTUsernameAndPasswordAuthenticationFilter(authenticationManager(), tokenService);
+                new JWTUsernameAndPasswordAuthenticationFilter(authenticationManager(), tokenService, userService);
         jwtAuthenticationFilter.setFilterProcessesUrl("/api/v1/login");
         return jwtAuthenticationFilter;
     }

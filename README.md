@@ -15,8 +15,7 @@ Import it.
 
 By default, the authorization header is set to Bearer token in the header of the parent folder of the collection, so you need to change it with your own.
 
-I have build this API by using access token and refresh token strategy to give users the best users experience.
-
+For best users experience. I can build this API by saving access token and refresh to seperated db table.
 So when there access tokens expire they can use the refresh token to get a new access token without having to log in again.
 
 

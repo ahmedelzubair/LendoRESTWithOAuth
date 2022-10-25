@@ -5,7 +5,7 @@ import sa.lendo.lendorestwithoauth.users.domain.UserToken;
 
 public interface TokenService {
 
-    UserToken updateUserToken(UserToken userToken);
+    UserToken updateUserToken(String oldAccessToken, UserToken userToken);
 
     UserToken saveNewUserToken(UserToken userToken);
 

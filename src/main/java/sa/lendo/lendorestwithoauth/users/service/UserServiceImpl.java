@@ -5,12 +5,14 @@ import org.springframework.stereotype.Service;
 import sa.lendo.lendorestwithoauth.exceptions.EntityNotFoundException;
 import sa.lendo.lendorestwithoauth.exceptions.EntityNotSavedException;
 import sa.lendo.lendorestwithoauth.users.domain.AppUser;
+import sa.lendo.lendorestwithoauth.users.domain.UserToken;
 import sa.lendo.lendorestwithoauth.users.domain.dto.UserDTO;
 import sa.lendo.lendorestwithoauth.users.domain.dto.UserSignUpDTO;
 import sa.lendo.lendorestwithoauth.users.domain.mapper.UserMapper;
 import sa.lendo.lendorestwithoauth.users.repo.UserJpaRepo;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,6 +41,24 @@ public class UserServiceImpl implements UserService {
 
         return homePageCategories.stream().map(userMapper::mapToDTO)
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public void addTokenIdToUser(UserToken userToken) {
+
+        Optional<AppUser> user = userJpaRepo.findByUsername(userToken.getUsername());
+        if (user.isEmpty()) {
+            throw new EntityNotFoundException("User with username " + userToken.getUsername()
+                    + " does not exist");
+        }
+        AppUser toSave = user.get();
+        toSave.setUserToken(userToken);
+        try {
+            userJpaRepo.save(toSave);
+        } catch (Exception e) {
+            throw new EntityNotSavedException("User with username " + userToken.getUsername()
+                    + " could not be saved");
+        }
     }
 
     @Override

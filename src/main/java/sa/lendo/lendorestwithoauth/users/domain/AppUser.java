@@ -3,8 +3,6 @@ package sa.lendo.lendorestwithoauth.users.domain;
 
 import lombok.*;
 import org.hibernate.Hibernate;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -35,9 +33,8 @@ public class AppUser implements Serializable {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
     private String roles;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "tokens_id",referencedColumnName = "username")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "tokens_id",referencedColumnName = "id")
     private UserToken userToken;
 
     @Override
