@@ -23,7 +23,7 @@ public class CommentController {
 
 
     @GetMapping("/{postId}")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<Set<CommentDTO>> getPostComments(@PathVariable Long postId) {
         return ResponseEntity.ok(commentService.findPostCommentsByPostId(postId));
     }

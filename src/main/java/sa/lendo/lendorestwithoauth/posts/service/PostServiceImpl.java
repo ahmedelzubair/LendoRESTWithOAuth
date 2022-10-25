@@ -1,11 +1,11 @@
 package sa.lendo.lendorestwithoauth.posts.service;
 
+import org.springframework.stereotype.Service;
+import sa.lendo.lendorestwithoauth.exceptions.EntityNotFoundException;
 import sa.lendo.lendorestwithoauth.posts.domain.Post;
 import sa.lendo.lendorestwithoauth.posts.domain.dto.PostDTO;
 import sa.lendo.lendorestwithoauth.posts.domain.mapper.PostMapper;
 import sa.lendo.lendorestwithoauth.posts.repo.PostJpaRepo;
-import sa.lendo.lendorestwithoauth.exceptions.EntityNotFoundException;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,25 +27,25 @@ public class PostServiceImpl implements PostService {
     @Override
     public Set<PostDTO> findAllPostsByUserId(Long userId) {
 
-        Optional<Set<Post>> adEntity = postJpaRepo.findPostsByUserId(userId);
+        Optional<Set<Post>> posts = postJpaRepo.findPostsByUserId(userId);
 
-        if (adEntity.isEmpty()) {
-            throw new EntityNotFoundException("Post with user id " + userId + " does not exist");
+        if (posts.isEmpty()) {
+            throw new EntityNotFoundException("Posts with user id " + userId + " does not exist");
         }
 
-        return adEntity.get().stream().map(postMapper::mapToDTO).collect(Collectors.toSet());
+        return posts.get().stream().map(postMapper::mapToDTO).collect(Collectors.toSet());
     }
 
 
     @Override
     public Set<PostDTO> findAllPosts() {
-        List<Post> homePagePosts = postJpaRepo.findAll();
+        List<Post> posts = postJpaRepo.findAll();
 
-        if (homePagePosts.isEmpty()) {
+        if (posts.isEmpty()) {
             throw new EntityNotFoundException("There is no posts yet!");
         }
 
-        return homePagePosts.stream().map(postMapper::mapToDTO)
+        return posts.stream().map(postMapper::mapToDTO)
                 .collect(Collectors.toSet());
     }
 

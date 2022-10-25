@@ -23,13 +23,13 @@ public class PostController {
 
 
     @GetMapping("")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<Set<PostDTO>> getAllPosts() {
         return ResponseEntity.ok(postService.findAllPosts());
     }
 
     @GetMapping("/user/{userId}")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<Set<PostDTO>> getAllUserPosts(@PathVariable Long userId) {
         return ResponseEntity.ok(postService.findAllPostsByUserId(userId));
     }

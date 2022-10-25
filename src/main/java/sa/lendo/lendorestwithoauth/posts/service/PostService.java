@@ -6,7 +6,7 @@ import java.util.Set;
 
 public interface PostService {
 
-    Set<PostDTO> findAllPostsByUserId(Long adId);
+    Set<PostDTO> findAllPostsByUserId(Long postId);
 
     Set<PostDTO> findAllPosts();
 

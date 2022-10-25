@@ -42,33 +42,31 @@ public class JWTUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         System.out.println("Failed authentication with exception: " + failed.getMessage());
+        super.unsuccessfulAuthentication(request, response, failed);
     }
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
 
-        String token = JWT.create()
-                .withSubject(authResult.getName())
-                .withArrayClaim("authorities", authResult.getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority).toArray(String[]::new))
-                .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + JWTConfig.EXPIRATION_TIME))
-                .withIssuer(request.getRequestURL().toString())
-                .sign(JWTConfig.getAlgorithm());
+        String token = getJWTToken(authResult, JWTConfig.EXPIRATION_TIME);
 
-        String refreshToken = JWT.create()
-                .withSubject(authResult.getName())
-                .withArrayClaim("authorities", authResult.getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority).toArray(String[]::new))
-                .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + JWTConfig.REFRESH_EXPIRATION_TIME))
-                .withIssuer(JWTConfig.ISSUER)
-                .sign(JWTConfig.getAlgorithm());
+        String refreshToken = getJWTToken(authResult, JWTConfig.REFRESH_EXPIRATION_TIME);
 
         response.addHeader(JWTConfig.HEADER_STRING, JWTConfig.TOKEN_PREFIX + token);
         response.addHeader(JWTConfig.HEADER_REFRESH_TOKEN, JWTConfig.TOKEN_PREFIX + refreshToken);
 
 
+    }
+
+    private String getJWTToken(Authentication authResult, long expirationTime) {
+        return JWT.create()
+                .withSubject(authResult.getName())
+                .withArrayClaim("authorities", authResult.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority).toArray(String[]::new))
+                .withIssuedAt(new Date())
+                .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
+                .withIssuer(JWTConfig.ISSUER)
+                .sign(JWTConfig.getAlgorithm());
     }
 }
