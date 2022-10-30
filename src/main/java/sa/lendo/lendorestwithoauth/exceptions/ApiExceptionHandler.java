@@ -1,6 +1,6 @@
 package sa.lendo.lendorestwithoauth.exceptions;
 
-import org.springframework.dao.DataIntegrityViolationException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -25,16 +25,6 @@ public class ApiExceptionHandler {
                 new ApiExceptionResponse(ex.getMessage(), HttpStatus.NOT_FOUND.value(), ex.getCause());
 
         return new ResponseEntity<>(apiExceptionResponse, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<Object> handleException(DataIntegrityViolationException ex) {
-        ApiExceptionResponse apiExceptionResponse;
-        if (ex.getMostSpecificCause().getMessage().contains("Duplicate entry"))
-            apiExceptionResponse = new ApiExceptionResponse("Entity already exists", HttpStatus.CONFLICT.value(), ex.getCause());
-        else
-            apiExceptionResponse = new ApiExceptionResponse(ex.getCause().getMessage(), HttpStatus.CONFLICT.value(), ex);
-        return new ResponseEntity<>(apiExceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
 

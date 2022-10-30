@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"ahmed\",\n    \"password\" : \"password\"\n}",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\" : \"admin\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -30,32 +30,6 @@
 							],
 							"path": [
 								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "SignUp",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"username\": \"khalid\",\n    \"password\" : \"password\",\n    \"email\": \"khalid@lendo.sa\",\n    \"name\":\"Khaild\",\n    \"gender\": \"MALE\",\n    \"status\": \"ACTIVE\",\n    \"roles\":\"USER\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{spring-url}}/users",
-							"host": [
-								"{{spring-url}}"
-							],
-							"path": [
-								"users"
 							]
 						}
 					},
@@ -132,14 +106,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{spring-url}}/posts/user/1",
+							"raw": "{{spring-url}}/users/3412/posts",
 							"host": [
 								"{{spring-url}}"
 							],
 							"path": [
-								"posts",
-								"user",
-								"1"
+								"users",
+								"3412",
+								"posts"
 							]
 						}
 					},
@@ -160,15 +134,14 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 1,\n    \"name\": \"أثاثات\",\n    \"status\": \"1\",\n    \"createdAt\": \"2022-08-03\"\n}"
+							"raw": ""
 						},
 						"url": {
-							"raw": "{{spring-url}}/posts/comments",
+							"raw": "{{spring-url}}/comments",
 							"host": [
 								"{{spring-url}}"
 							],
 							"path": [
-								"posts",
 								"comments"
 							]
 						}
@@ -188,14 +161,14 @@
 							"raw": "{\n    \"adId\": 1,\n}"
 						},
 						"url": {
-							"raw": "{{spring-url}}/posts/comments/1",
+							"raw": "{{spring-url}}/posts/1677/comments",
 							"host": [
 								"{{spring-url}}"
 							],
 							"path": [
 								"posts",
-								"comments",
-								"1"
+								"1677",
+								"comments"
 							]
 						}
 					},
@@ -209,7 +182,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhaG1lZCIsImlzcyI6ImxlbmRvLnNhIiwiZXhwIjoxNjY2NzE1ODMwLCJpYXQiOjE2NjY3MTU3MTAsImF1dGhvcml0aWVzIjpbIlJPTEVfQURNSU4iLCJSRUFEX1BPU1RTIiwiV1JJVEVfUE9TVFMiXX0.PT7HEx7laF5xg2RKsUUAJ-NGMbZ2VTRtmOOOcXut2YY",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlzcyI6ImxlbmRvLnNhIiwiZXhwIjoxNjY3MTQ5NzIzLCJpYXQiOjE2NjcxNDkxMjMsImF1dGhvcml0aWVzIjpbIlJPTEVfVVNFUiJdfQ.tGE7gGCfvW0EFstrh-M49_hebYTn1A9KVsDnpkd5HXk",
 				"type": "string"
 			}
 		]
