@@ -15,6 +15,7 @@ Import it.
 - Or put it in the postman environment variables to be used in all requests.
 
 By default, the authorization header is set to Bearer token in the header of the parent environment variables in the postman collection.
+
 Hope this what you are looking for.
 
 Thanks and I am looking forward to hearing from you.
