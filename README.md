@@ -14,8 +14,7 @@ Import it.
 - After that you are good to go with testing all protected routes by setting the access token on each request header.
 - Or put it in the postman environment variables to be used in all requests.
 
-By default, the authorization header is set to Bearer token in the header of the parent folder of the postman collection, so you need to change it with your own.
-
+By default, the authorization header is set to Bearer token in the header of the parent environment variables in the postman collection.
 Hope this what you are looking for.
 
 Thanks and I am looking forward to hearing from you.
