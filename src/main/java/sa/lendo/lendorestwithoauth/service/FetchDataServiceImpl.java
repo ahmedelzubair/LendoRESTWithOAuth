@@ -21,11 +21,10 @@ public class FetchDataServiceImpl implements FetchDataService {
     }
 
 
-
     @Override
     public Set<User> fetchUsers() {
         User[] users = restTemplate.getForObject(BASE_API_URL + "/users", User[].class);
-        if (users == null) {
+        if (users == null || users.length <= 0) {
             throw new EntityNotFoundException("There is no users yet!");
         }
         return Set.of(Optional.of(users).orElse(new User[0]));
@@ -34,7 +33,7 @@ public class FetchDataServiceImpl implements FetchDataService {
     @Override
     public Set<Post> fetchAllPosts() {
         Post[] posts = restTemplate.getForObject(BASE_API_URL + "/posts", Post[].class);
-        if (posts == null) {
+        if (posts == null || posts.length <= 0) {
             throw new EntityNotFoundException("Posts not found");
         }
         return Set.of(Optional.of(posts).orElse(new Post[0]));
@@ -43,8 +42,8 @@ public class FetchDataServiceImpl implements FetchDataService {
     @Override
     public Set<Post> fetchUserPosts(Long userId) {
         Post[] posts = restTemplate.getForObject(BASE_API_URL + "/users/" + userId + "/posts", Post[].class);
-        if (posts == null) {
-            throw new EntityNotFoundException("No posts found for user with id: " + userId );
+        if (posts == null || posts.length <= 0) {
+            throw new EntityNotFoundException("No posts found for user with id: " + userId);
         }
         return Set.of(posts);
     }
@@ -52,7 +51,7 @@ public class FetchDataServiceImpl implements FetchDataService {
     @Override
     public Set<Comment> fetchAllComments() {
         Comment[] comments = restTemplate.getForObject(BASE_API_URL + "/comments", Comment[].class);
-        if (comments == null) {
+        if (comments == null || comments.length <= 0) {
             throw new EntityNotFoundException("Comments not found");
         }
         return Set.of(Optional.of(comments).orElse(new Comment[0]));
@@ -61,7 +60,7 @@ public class FetchDataServiceImpl implements FetchDataService {
     @Override
     public Set<Comment> fetchPostComments(Long postId) {
         Comment[] comments = restTemplate.getForObject(BASE_API_URL + "/posts/" + postId + "/comments", Comment[].class);
-        if (comments == null) {
+        if (comments == null || comments.length <= 0) {
             throw new EntityNotFoundException("No comments found");
         }
         return Set.of(Optional.of(comments).orElse(new Comment[0]));
