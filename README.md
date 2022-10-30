@@ -9,7 +9,7 @@ How to use the API:
 - find the API postman collection in the root folder of the project.
 Import it.
 - Login by user (admin) and password (admin) or you can use the saved user in the postman collection.
-- Or open AppSecurityConfig.java to set your user in the inMemoryAuthentication method.
+- Or open AppSecurityConfig.java to set your own user and password in the inMemoryAuthentication method.
 - Then you should get the access token and refresh token from the response headers of the login process.
 - After that you are good to go with testing all protected routes by setting the access token on each request header.
 - Or put it in the postman environment variables to be used in all requests.
